@@ -12,10 +12,10 @@ __pycache__/
 .vscode/
 
 # Model files
-models/
+#models/
 
 # Output files
-outputs/
+#outputs/
 
 # OS files
 .DS_Store
