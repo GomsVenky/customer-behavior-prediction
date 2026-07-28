@@ -1,51 +1,106 @@
-# Customer Behavior Prediction
+Customer Behavior Prediction using Machine Learning
+📌 Project Overview
 
-## Project Overview
+This project aims to analyze customer purchasing behavior and build a machine learning model to predict whether a customer will respond to a marketing campaign.
 
-This project aims to analyze customer purchasing behavior using Exploratory Data Analysis (EDA) and Machine Learning techniques.
+The project covers:
 
-The project focuses on understanding customer demographics, income, spending patterns, and campaign responses to identify the factors that influence purchasing behavior.
+Data Cleaning
+Exploratory Data Analysis (EDA)
+Feature Engineering
+Machine Learning
+Model Evaluation
+Business Insights
+📂 Dataset
 
-The insights obtained from this analysis will be used to build a machine learning model capable of predicting customer responses to future marketing campaigns.
+Dataset: Marketing Campaign Dataset
 
----
+Number of records: 2240
 
-## Dataset
+Number of features: 29 (before feature engineering)
 
-The dataset contains customer information such as:
+Target Variable:
 
-- Demographics
-- Education
-- Marital Status
-- Income
-- Purchase history
-- Marketing campaign responses
-- Customer enrollment details
+Response
+1 → Customer accepted the campaign
+0 → Customer did not accept the campaign
+🛠 Technologies Used
+Python
+Pandas
+NumPy
+Matplotlib
+Seaborn
+Scikit-learn (Coming soon)
+✅ Project Progress
+✔ Phase 1 — Data Loading
+Loaded dataset using Pandas
+Verified data types
+Explored dataset structure
+Used:
+head()
+info()
+describe()
+✔ Phase 2 — Data Cleaning
 
----
+Completed:
 
-## Technologies Used
+Checked missing values
+Filled missing values in Income using Median
+Checked duplicate records
+Verified data types
+Detected outliers using IQR and Boxplots
+✔ Phase 3 — Exploratory Data Analysis (Completed)
+Univariate Analysis
 
-- Python
-- Pandas
-- NumPy
-- Matplotlib
-- Seaborn
-- Jupyter Notebook
-- Git & GitHub
+Analyzed:
 
----
+Income Distribution
+Education
+Marital Status
 
-## Project Status
+Techniques:
 
-🚧 In Progress
+Histogram
+Countplot
+Boxplot
+Summary Statistics
+Bivariate Analysis
 
-Completed so far:
+Studied relationships between:
 
-- Project setup
-- Data loading
-- Data cleaning
-- Missing value treatment
-- Outlier detection
-- Feature engineering
-- Initial exploratory data analysis
+Income vs Total Spending
+Education vs Total Spending
+Marital Status vs Total Spending
+Total Children vs Total Spending
+
+Visualizations Used:
+
+Scatter Plot
+Box Plot
+Correlation Heatmap
+✔ Feature Engineering (Current Progress)
+
+Created:
+
+Total_Children = Kidhome + Teenhome
+
+(More features will be added in upcoming phases.)
+
+🎯 Key Insights
+
+You can write something like:
+
+Higher income customers generally spend more.
+Customers with Basic education tend to spend less than other education groups.
+Customers without children show higher median spending.
+Rare marital status categories (YOLO, Absurd) contain very few records and should be interpreted carefully.
+The Response variable is highly imbalanced (~85% No Response vs ~15% Response).
+
+(We'll keep adding insights as we progress.)
+
+🚀 Upcoming Work
+Additional Feature Engineering
+Data Preprocessing
+Model Training
+Model Evaluation
+Business Recommendations
