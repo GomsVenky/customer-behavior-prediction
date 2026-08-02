@@ -78,13 +78,25 @@ Visualizations Used:
 Scatter Plot
 Box Plot
 Correlation Heatmap
-✔ Feature Engineering (Current Progress)
+✔ Feature Engineering
 
-Created:
+Created new features to improve model performance and business understanding:
 
-Total_Children = Kidhome + Teenhome
+- Created `Total_Spending` by combining spending across all product categories.
+- Created `Total_Children` by combining `Kidhome` and `Teenhome`.
+- Created `Age` from `Year_Birth` and removed unrealistic age records (>100 years).
+- Created `Customer_Tenure` from `Dt_Customer`.
+- Dropped redundant columns (`Year_Birth` and `Dt_Customer`) after creating the new features.
 
-(More features will be added in upcoming phases.)
+## Machine Learning Preprocessing
+
+Performed preprocessing steps before model training:
+
+- Applied One-Hot Encoding to categorical variables.
+- Removed redundant dummy variables using `drop_first=True`.
+- Verified all features were numeric.
+- Separated features (`X`) and target (`y`).
+- Split the dataset into training (80%) and testing (20%) sets using `train_test_split()`.
 
 🎯 Key Insights
 
@@ -99,7 +111,6 @@ The Response variable is highly imbalanced (~85% No Response vs ~15% Response).
 (We'll keep adding insights as we progress.)
 
 🚀 Upcoming Work
-Additional Feature Engineering
 Data Preprocessing
 Model Training
 Model Evaluation
