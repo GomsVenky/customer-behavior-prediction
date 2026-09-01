@@ -17,6 +17,9 @@ __pycache__/
 # Output files
 #outputs/
 
+# Archives
+*.zip
+
 # OS files
 .DS_Store
 Thumbs.db

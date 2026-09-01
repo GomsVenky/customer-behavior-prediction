@@ -240,31 +240,48 @@ The final evaluation used an **80:20 train-test split**, with stratification and
 
 ---
 
-## 🥇 Final Model Selection — Random Forest
+## 🥇 Final Model Selection
 
-**Random Forest was selected as the final model.**
+The initial model comparison evaluated five classification algorithms:
 
-It achieved:
+1. Logistic Regression
+2. Decision Tree
+3. Random Forest
+4. K-Nearest Neighbors (KNN)
+5. Support Vector Machine (SVM)
+
+Based on the initial evaluation, Random Forest achieved the highest Accuracy, Precision and ROC-AUC among the five baseline models.
+
+However, to further improve the predictive performance and explore a stronger gradient-boosting approach, **LightGBM was subsequently evaluated as an additional candidate model**.
+
+LightGBM achieved the following performance on the same unseen test set:
 
 * **89.06% Accuracy**
-* **82.14% Precision**
-* **34.33% Recall**
-* **48.42% F1-score**
-* **90.35% ROC-AUC**
+* **70.45% Precision**
+* **46.27% Recall**
+* **55.86% F1-score**
+* **91.04% ROC-AUC**
 
-Random Forest achieved the highest Accuracy, Precision and ROC-AUC among the five evaluated models.
+LightGBM provided the highest ROC-AUC observed during the model-development stage and showed a stronger ability to distinguish between responders and non-responders.
 
-Precision is particularly important for this business problem because the objective is to identify customers who are genuinely likely to respond while reducing unnecessary marketing efforts.
+Therefore, **LightGBM was selected as the final model for deployment**.
 
-Logistic Regression achieved higher Recall and F1-score, but Random Forest provided substantially higher Precision and the highest ROC-AUC.
-
-Therefore, Random Forest provides a stronger choice for targeted customer selection under the current business objective.
+The final LightGBM model was then further evaluated using probability-threshold optimization to improve the balance between Precision and Recall for the marketing use case.
 
 ---
 
-## 🔍 Feature Importance
+## 🎯 Classification Threshold Optimization
 
-Feature-importance analysis was performed using the final Random Forest model.
+The default classification threshold of 0.50 was not considered ideal for the business objective because the dataset is highly imbalanced and missing potential responders can reduce the effectiveness of targeted marketing campaigns.
+
+Therefore, the classification threshold was optimized based on the Precision-Recall trade-off.
+
+The final threshold was selected as:
+0.20
+
+## 🔍 Feature Importance — Random Forest Analysis
+
+Feature-importance analysis was performed using the Random Forest model.
 
 The top predictive features were:
 
@@ -291,65 +308,73 @@ Purchasing behaviour, including `Total_Spending` and individual product-category
 
 Feature importance indicates predictive contribution and should not be interpreted as a causal relationship.
 
+> **Note:** The feature-importance analysis shown above was performed using the Random Forest model during the model-development stage. The final deployed model is LightGBM.
+
 ---
 
 ## 💼 Business Recommendations
 
-Based on the final Random Forest model and feature-importance analysis:
+Based on the final LightGBM model, threshold optimization, and the feature-importance analysis performed during model development:
 
 ### 1. Prioritize recently active customers
 
-Recency was the most important predictive feature.
+Recency was one of the strongest predictive features identified during model analysis.
 
-Customers with more recent purchasing activity can be prioritized for targeted marketing campaigns.
+Customers with more recent purchasing activity can therefore be prioritized for targeted marketing campaigns.
 
 ### 2. Consider customer spending behaviour
 
-Total spending and several product-category spending variables were among the most important features.
+Total spending and several product-category spending variables were important predictive signals.
 
 Customers with stronger purchasing activity can be considered higher-priority campaign targets.
 
 ### 3. Use digital engagement as a targeting signal
 
-`NumWebVisitsMonth` ranked among the important features.
+`NumWebVisitsMonth` was among the important predictive features.
 
-Website engagement may therefore provide a useful signal when identifying potential campaign responders.
+Website engagement can therefore provide a useful signal when identifying potential campaign responders.
 
 ### 4. Consider previous campaign engagement
 
-`AcceptedCmp5` and `AcceptedCmp3` were among the important predictive features.
+Previous campaign response features such as `AcceptedCmp5` and `AcceptedCmp3` provided useful predictive information.
 
-Previous campaign engagement can help identify customers who may be more likely to respond to future campaigns.
+Previous campaign engagement can therefore help identify customers who may be more likely to respond to future campaigns.
 
 ### 5. Use the model as a decision-support tool
 
-The Random Forest achieved **82.14% precision** and **90.35% ROC-AUC** on the unseen test data.
+The final LightGBM model achieved **60.00% precision, 58.21% recall, 59.09% F1-score and 91.04% ROC-AUC** at the selected threshold of 0.20.
 
-The model can therefore support marketing teams in prioritizing customers rather than replacing business judgement.
+The model can therefore support marketing teams in prioritizing customers while business judgement remains important.
 
 ---
 
 ## ⚠️ Model Limitation
 
-The final Random Forest recall was **34.33%**.
+The final LightGBM model uses a classification threshold of **0.20** to improve the identification of potential campaign responders.
 
-This means that some customers who would respond to the campaign may not be identified by the current classification threshold.
+At this threshold, the model achieved:
 
-The model therefore prioritizes reliable positive predictions over identifying every possible responder.
+* **60.00% Precision**
+* **58.21% Recall**
+* **59.09% F1-score**
+* **91.04% ROC-AUC**
 
+Although threshold optimization improved Recall compared with the default threshold, some actual responders may still not be identified.
+
+The model should therefore be used as a decision-support tool for customer targeting rather than as a replacement for marketing judgement.
 ---
 
 ## 🚀 Future Improvements
 
 Potential future improvements include:
-
-* Probability-threshold optimization to improve the Precision-Recall trade-off.
 * Further analysis of false positives and false negatives.
 * Additional feature selection and feature engineering.
 * Testing alternative class-imbalance handling techniques.
-* Evaluating whether calibrated probabilities can improve campaign targeting.
-* Exploring additional model evaluation techniques before deployment.
-
+* Evaluating probability calibration and probability reliability.
+* Testing the API with a larger set of real-world customer records.
+* Containerization using Docker for reproducible deployment.
+* Integration with a frontend or marketing dashboard.
+* Monitoring model predictions and performance after deployment.
 ---
 
 ## 🛠️ Technologies Used
@@ -361,18 +386,35 @@ Potential future improvements include:
 * Seaborn
 * Scikit-learn
 * Jupyter Notebook
+* LightGBM
+* FastAPI
+* Uvicorn
+* SHAP
 
 ---
 
 ## 📁 Project Structure
 
+
+### 4. Update Project Structure
+
+Your current README shows `src/` and `models/` as empty. We should reflect what actually exists:
+
+```markdown
+## 📁 Project Structure
+
 ```text
 customer-behavior-prediction/
+│
+├── app/
+│   └── main.py
 │
 ├── data/
 │   └── marketing_campaign.csv
 │
 ├── models/
+│   ├── final_lightgbm_model.pkl
+│   └── model_config.pkl
 │
 ├── notebooks/
 │   └── 01_data_exploration.ipynb
@@ -384,18 +426,63 @@ customer-behavior-prediction/
 ├── .gitignore
 ├── README.md
 └── requirements.txt
-```
 
 ---
 
+## 🚀 FastAPI Deployment
+
+The final LightGBM model was deployed as a REST API using FastAPI.
+
+The API uses the saved model and configuration files:
+
+```text
+models/
+├── final_lightgbm_model.pkl
+└── model_config.pkl
+
+**Starting the API
+
+Activate the virtual environment and run:
+  uvicorn app.main:app --reload
+The API will be available at:
+  http://127.0.0.1:8000
+Interactive API documentation is available through Swagger UI:
+  http://127.0.0.1:8000/docs
+Prediction Endpoint
+  POST /predict
+
+  The endpoint accepts the 38 model-ready customer features and returns:
+
+    Response probability
+    Predicted response
+    Prediction label
+    Threshold used
+The final classification threshold is:
+    0.20
+A probability greater than or equal to 0.20 is classified as:
+    Likely to Respond
+Otherwise, the customer is classified as:
+    Not Likely to Respond
+Example Response:
+    {
+  "response_probability": 0.9992452796098292,
+  "predicted_response": 1,
+  "prediction_label": "Likely to Respond",
+  "threshold_used": 0.2
+    }
+
 ## 📌 Conclusion
 
-This project developed and evaluated multiple machine-learning classification models for predicting customer response to marketing campaigns.
+This project developed an end-to-end machine-learning solution for predicting customer response to marketing campaigns.
 
-The workflow included data cleaning, exploratory data analysis, feature engineering, categorical encoding, feature scaling where appropriate, cross-validation, hyperparameter tuning, feature-importance analysis, and final evaluation on unseen test data.
+The workflow included data cleaning, exploratory data analysis, feature engineering, categorical encoding, model comparison, cross-validation, hyperparameter tuning, feature-importance analysis, threshold optimization, model saving, and API deployment.
 
-After identifying and removing the customer `ID` feature, all five models were re-evaluated using a consistent 38-feature dataset.
+Five traditional classification models were initially evaluated: Logistic Regression, Decision Tree, Random Forest, KNN, and SVM. Random Forest provided strong baseline performance during the initial comparison.
 
-Among the evaluated models, **Random Forest was selected as the final model**, achieving **89.06% accuracy, 82.14% precision, and 90.35% ROC-AUC**.
+LightGBM was subsequently evaluated as an additional gradient-boosting model and was selected as the final model for deployment based on its strong predictive performance, particularly its **91.04% ROC-AUC**.
 
-The results indicate that recent customer activity, spending behaviour, income, age, online engagement, and previous campaign responses provide useful predictive signals for identifying potential marketing campaign responders.
+The classification threshold was optimized to **0.20** to improve the identification of potential campaign responders. At this threshold, the final LightGBM model achieved **87.95% accuracy, 60.00% precision, 58.21% recall, 59.09% F1-score, and 91.04% ROC-AUC** on the unseen test data.
+
+The trained model was saved and deployed through a **FastAPI REST API**, with successful prediction testing performed through Swagger UI.
+
+The resulting solution demonstrates an end-to-end machine-learning workflow from customer data exploration and model development through explainability, threshold optimization, model persistence, and API deployment.
