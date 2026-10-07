@@ -1,0 +1,34 @@
+project:
+  name: "Customer Behavior Prediction"
+  random_state: 42
+  reference_year: 2026
+
+data:
+  raw_path: "data/raw/marketing_campaign.csv"
+  processed_path: "data/processed/customer_features.csv"
+
+prediction:
+  model_name: "LightGBM"
+  model_path: "models/final_lightgbm_model.pkl"
+  config_path: "models/model_config.pkl"
+  threshold: 0.20
+
+segmentation:
+  n_clusters: 2
+  model_path: "models_artifacts/kmeans_model.pkl"
+  scaler_path: "models_artifacts/segmentation_scaler.pkl"
+  config_path: "models_artifacts/segmentation_config.pkl"
+
+clv:
+  model_path: "models/final_clv_rf_model.pkl"
+  config_path: "models/clv_model_config.pkl"
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+
+dashboard:
+  port: 8501
+
+database:
+  url_env_variable: "DATABASE_URL"

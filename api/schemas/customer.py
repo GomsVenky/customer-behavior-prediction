@@ -1,0 +1,42 @@
+from pydantic import BaseModel
+
+
+class CustomerData(BaseModel):
+    Income: float
+    Kidhome: int
+    Teenhome: int
+    Recency: int
+    MntWines: int
+    MntFruits: int
+    MntMeatProducts: int
+    MntFishProducts: int
+    MntSweetProducts: int
+    MntGoldProds: int
+    NumDealsPurchases: int
+    NumWebPurchases: int
+    NumCatalogPurchases: int
+    NumStorePurchases: int
+    NumWebVisitsMonth: int
+    AcceptedCmp3: int
+    AcceptedCmp4: int
+    AcceptedCmp5: int
+    AcceptedCmp1: int
+    AcceptedCmp2: int
+    Complain: int
+    Z_CostContact: float
+    Z_Revenue: float
+    Total_Spending: int
+    Total_Children: int
+    Age: int
+    Customer_Tenure: int
+    Education_Basic: int
+    Education_Graduation: int
+    Education_Master: int
+    Education_PhD: int
+    Marital_Status_Alone: int
+    Marital_Status_Divorced: int
+    Marital_Status_Married: int
+    Marital_Status_Single: int
+    Marital_Status_Together: int
+    Marital_Status_Widow: int
+    Marital_Status_YOLO: int
